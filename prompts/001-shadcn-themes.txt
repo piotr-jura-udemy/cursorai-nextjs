@@ -1,0 +1,5 @@
+Let's install and configure shadcn/ui in our Next.js project. We'll need several components including Dialog, Form, Button and Card components.
+
+Can you help me set this up?
+
+We need the light/dark mode support, using the best and most popular Next.js solution for that.
