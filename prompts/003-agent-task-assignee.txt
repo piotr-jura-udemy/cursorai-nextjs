@@ -1,0 +1,7 @@
+Update TaskCard component using shadcn/ui.
+
+Each card should display title, description, assignee.
+
+It should have an option to edit the assignee.
+
+Make it look professional. Install missing components.
