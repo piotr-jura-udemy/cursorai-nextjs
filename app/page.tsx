@@ -1,17 +1,13 @@
+import { KanbanBoard } from "@/components/kanban-board";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 export default function Home() {
   return (
-    <main className="p-8">
-      <div className="flex justify-end mb-4">
+    <main className="relative">
+      <div className="absolute top-4 right-4 z-10">
         <ThemeToggle />
       </div>
-      <Card className="p-6">
-        <h1 className="text-2xl font-bold mb-4">Welcome</h1>
-        <Button>Click me</Button>
-      </Card>
+      <KanbanBoard />
     </main>
   );
 }

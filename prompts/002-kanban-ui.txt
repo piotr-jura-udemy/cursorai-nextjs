@@ -1,0 +1,5 @@
+Help me create kanban-style board layout using shadcnui and Tailwind.
+
+I want three columns Todo, In progress, Done.
+
+Each column should be able to display task cards.
