@@ -1,0 +1,7 @@
+We're missing a way to open this dialog to create a new task.
+
+There's no way to open the dialog for editing an existing task. 
+
+Please use dropdown inside each task, that will have an "Edit" option.
+
+Additionally, it seems that we're missing some components that are required by @task-dialog.tsx 
