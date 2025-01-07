@@ -29,12 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-const TEAM_MEMBERS = [
-  { id: "1", name: "John Doe", avatar: "/avatars/john.png" },
-  { id: "2", name: "Jane Smith", avatar: "/avatars/jane.png" },
-  { id: "3", name: "Mike Johnson", avatar: "/avatars/mike.png" },
-];
+import { assignees } from "@/lib/data/assignees";
 
 const taskFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -141,20 +136,19 @@ export function TaskDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {TEAM_MEMBERS.map((member) => (
-                        <SelectItem key={member.id} value={member.id}>
-                          <div className="flex items-center gap-2">
-                            <Avatar className="h-6 w-6">
-                              <AvatarImage
-                                src={member.avatar}
-                                alt={member.name}
-                              />
-                              <AvatarFallback>
-                                {member.name.slice(0, 2).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span>{member.name}</span>
-                          </div>
+                      {assignees.map((assignee) => (
+                        <SelectItem
+                          key={assignee.id}
+                          value={assignee.id}
+                          onSelect={() => {
+                            form.setValue("assigneeId", assignee.id);
+                          }}
+                        >
+                          <Avatar className="h-6 w-6 mr-2">
+                            <AvatarImage src={assignee.avatarUrl} />
+                            <AvatarFallback>{assignee.name[0]}</AvatarFallback>
+                          </Avatar>
+                          {assignee.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

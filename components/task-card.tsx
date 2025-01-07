@@ -19,6 +19,7 @@ import { MoreHorizontal } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { TaskDialog } from "./task-dialog";
+import { assignees } from "@/lib/data/assignees";
 
 interface TaskCardProps {
   title: string;
@@ -36,20 +37,16 @@ interface TaskCardProps {
   }) => void;
 }
 
-const TEAM_MEMBERS = [
-  { id: "1", name: "John Doe", avatar: "/avatars/john.png" },
-  { id: "2", name: "Jane Smith", avatar: "/avatars/jane.png" },
-  { id: "3", name: "Mike Johnson", avatar: "/avatars/mike.png" },
-];
-
 export function TaskCard({
   title,
   description,
-  assignee,
+  assignee: assigneeProp,
   onAssigneeChange,
   onTaskUpdate,
 }: TaskCardProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const assignee = assignees.find((a) => a.id === assigneeProp?.id);
 
   return (
     <>
@@ -64,13 +61,8 @@ export function TaskCard({
                     {assignee && (
                       <div className="flex items-center gap-2">
                         <Avatar className="h-6 w-6">
-                          <AvatarImage
-                            src={assignee.avatar}
-                            alt={assignee.name}
-                          />
-                          <AvatarFallback>
-                            {assignee.name.slice(0, 2).toUpperCase()}
-                          </AvatarFallback>
+                          <AvatarImage src={assignee?.avatarUrl} />
+                          <AvatarFallback>{assignee?.name[0]}</AvatarFallback>
                         </Avatar>
                         <span className="truncate">{assignee.name}</span>
                       </div>
@@ -78,11 +70,14 @@ export function TaskCard({
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  {TEAM_MEMBERS.map((member) => (
+                  {assignees.map((member) => (
                     <SelectItem key={member.id} value={member.id}>
                       <div className="flex items-center gap-2">
                         <Avatar className="h-6 w-6">
-                          <AvatarImage src={member.avatar} alt={member.name} />
+                          <AvatarImage
+                            src={member.avatarUrl}
+                            alt={member.name}
+                          />
                           <AvatarFallback>
                             {member.name.slice(0, 2).toUpperCase()}
                           </AvatarFallback>

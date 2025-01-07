@@ -1,0 +1,7 @@
+I need a list of "static" assginees for the tasks.
+
+This would eventually be fetched from the db.
+
+For now, put this in a *.ts file. Put in the right place.
+
+The assignees need avatars. Can we grab some avatar faces over the internet?
