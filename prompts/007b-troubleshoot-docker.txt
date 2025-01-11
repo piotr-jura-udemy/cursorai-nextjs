@@ -1,0 +1,1 @@
+So I ran docker compose up -d, and still failed. What about the PATH?

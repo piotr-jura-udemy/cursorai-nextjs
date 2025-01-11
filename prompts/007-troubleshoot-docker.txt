@@ -1,0 +1,3 @@
+I've just downloade Docker Desktop for Mac, and this is what I get when I ran that command. 
+
+What could the problem be, please suggest the best solution for this issue.
