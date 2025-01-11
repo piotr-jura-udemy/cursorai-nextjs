@@ -1,0 +1,7 @@
+We need to setup a database that will keep the data fro this project. Let's store columns & tasks in the db.
+
+Use Postgres for db & drizzle for the ORM.
+
+For now, setup the docker compose file for Postgres, and drizzle connection setup etc.
+
+Don't touch the React components or pages yet.
