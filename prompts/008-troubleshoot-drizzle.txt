@@ -1,0 +1,22 @@
+Only do those points below, NOTHING ELSE!
+
+1) We dont have an src folder, so move everything into the lib one
+2) Next up, we seem not to have .env file and additionally, let's just use DB_URL, not separate env vars
+3) Use @docker-compose.yml for credentials
+4) For @drizzle.config.ts use this format instead:
+
+import { defineConfig } from "drizzle-kit";
+ 
+export default defineConfig({
+  schema: "./schema/*",
+  out: "./drizzle",
+  dialect: 'postgresql',
+  dbCredentials: {
+    url: process.env.DB_URL,
+  }
+});
+
+
+For reference use: @https://orm.drizzle.team/drizzle-studio/overview 
+
+5) Fix the @config.ts to use the DB_URL as well
