@@ -1,0 +1,1 @@
+With this setup @docker-compose.yml how do I make sure, that kanban database is created? And if I don't have that database, how do I create one?
