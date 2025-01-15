@@ -1,0 +1,1 @@
+You genereted markup with Tailwind, but you should use existing components like @KanbanColumn() and @task-card.tsx - so just modify them if necessary

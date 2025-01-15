@@ -1,0 +1,10 @@
+We need to fetch columns & tasks.
+
+This shhould achieved through:
+- It's Next.js so use Server Components when possible
+- Use server actions when possible
+- Use Next.js 15
+
+For now only handle the column & task fetching, storing/updating/deleting - this should ignored for now.
+
+Make sure not to use useEffect.

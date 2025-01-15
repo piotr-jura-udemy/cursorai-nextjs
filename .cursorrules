@@ -3,3 +3,7 @@
 - The project is using Shadcn UI for components. Do everything using shadcn whenever possible.
 
 - Every single time we need to run a shadcn command, use `npx shadcn@latest`
+
+- It's Next.js so use Server Components when possible
+- Use server actions when possible
+- Use Next.js 15

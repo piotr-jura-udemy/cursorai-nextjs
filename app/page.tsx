@@ -1,12 +1,8 @@
-import { KanbanBoard } from "@/components/kanban-board";
-import { ThemeToggle } from "@/components/theme-toggle";
+import KanbanBoard from "@/components/kanban-board";
 
 export default function Home() {
   return (
-    <main className="relative">
-      <div className="absolute top-4 right-4 z-10">
-        <ThemeToggle />
-      </div>
+    <main className="flex min-h-screen flex-col p-4">
       <KanbanBoard />
     </main>
   );
