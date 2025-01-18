@@ -1,29 +1,41 @@
 "use server";
 
-import { z } from "zod";
+import { db } from "@/lib/db/config";
+import { tasks } from "@/lib/db/schema";
+import { taskFormSchema, type TaskFormValues } from "@/lib/schemas";
+import { revalidatePath } from "next/cache";
 
-// Reuse the same schema for server-side validation
-const taskFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
-  assigneeId: z.string().optional(),
-});
+export async function createTask(formData: TaskFormValues) {
+  try {
+    const result = taskFormSchema.safeParse(formData);
 
-export async function createTask(formData: z.infer<typeof taskFormSchema>) {
-  // Server-side validation
-  const result = taskFormSchema.safeParse(formData);
+    if (!result.success) {
+      console.log(result.error.flatten().fieldErrors);
+      return {
+        error: "Invalid task data",
+        details: result.error.flatten().fieldErrors,
+      };
+    }
 
-  if (!result.success) {
-    throw new Error("Invalid task data");
+    const task = await db
+      .insert(tasks)
+      .values({
+        title: result.data.title,
+        description: result.data.description || null,
+        priority: result.data.priority,
+        dueDate: result.data.dueDate || null,
+        status: "TODO",
+      })
+      .returning();
+
+    revalidatePath("/");
+
+    return { data: task[0] };
+  } catch (error) {
+    return {
+      error: "Failed to create task",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    };
   }
-
-  // TODO: Replace with your actual database call
-  console.log("Creating task:", result.data);
-
-  // For now just return mock data
-  return {
-    id: crypto.randomUUID(),
-    ...result.data,
-    status: "TODO",
-  };
 }
