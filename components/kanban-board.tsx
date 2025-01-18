@@ -2,7 +2,7 @@ import { getColumns, getTasks } from "@/lib/db/queries";
 import { KanbanColumn } from "./kanban-column";
 import { TaskCard } from "./task-card";
 
-export default async function KanbanBoard() {
+export async function KanbanBoard() {
   const [columns, tasks] = await Promise.all([getColumns(), getTasks()]);
 
   return (

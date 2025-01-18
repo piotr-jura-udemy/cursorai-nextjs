@@ -1,0 +1,5 @@
+So in @kanban-board.tsx you've added some strange API that's not necessary only leave the data fetching that was there with Promise.all.
+
+The loading state should be displayd using loading.tsx. 
+
+Also, the Skeleton component is not installed.
