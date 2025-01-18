@@ -1,0 +1,4 @@
+I'd like to store the new task. There's the @task-dialog.tsx . Please create a server action that will store a new task. There's already the client side validation, but please reuse the same schema on the backend and validate the task again inside the server action.
+
+Please also simplify the flow, so that the task is stored immediatelly, and we don't pass so many event handlers through components.
+

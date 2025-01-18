@@ -30,6 +30,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { assignees } from "@/lib/data/assignees";
+import { createTask } from "@/lib/actions/task";
+import { useState } from "react";
 
 const taskFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -40,48 +42,36 @@ const taskFormSchema = z.object({
 type TaskFormValues = z.infer<typeof taskFormSchema>;
 
 interface TaskDialogProps {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  initialData?: {
-    title: string;
-    description?: string;
-    assignee?: {
-      id: string;
-      name: string;
-      avatar?: string;
-    };
-  };
-  onSubmit: (data: TaskFormValues) => void;
   trigger?: React.ReactNode;
 }
 
-export function TaskDialog({
-  open,
-  onOpenChange,
-  initialData,
-  onSubmit,
-  trigger,
-}: TaskDialogProps) {
+export function TaskDialog({ trigger }: TaskDialogProps) {
+  const [open, setOpen] = useState(false);
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
-      title: initialData?.title || "",
-      description: initialData?.description || "",
-      assigneeId: initialData?.assignee?.id,
+      title: "",
+      description: "",
+      assigneeId: undefined,
     },
   });
 
-  function handleSubmit(data: TaskFormValues) {
-    onSubmit(data);
-    onOpenChange?.(false);
+  async function handleSubmit(data: TaskFormValues) {
+    try {
+      await createTask(data);
+      setOpen(false);
+      form.reset();
+    } catch (error) {
+      console.error("Failed to create task:", error);
+    }
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{initialData ? "Edit Task" : "Create Task"}</DialogTitle>
+          <DialogTitle>Create Task</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -159,7 +149,7 @@ export function TaskDialog({
             />
 
             <Button type="submit" className="w-full">
-              {initialData ? "Save Changes" : "Create Task"}
+              Create Task
             </Button>
           </form>
         </Form>
