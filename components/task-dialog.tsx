@@ -32,27 +32,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { assignees } from "@/lib/data/assignees";
 import { createTask } from "@/lib/actions/task";
 import { useState } from "react";
-
-const taskFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
-  assigneeId: z.string().optional(),
-});
-
-type TaskFormValues = z.infer<typeof taskFormSchema>;
+import { taskFormSchema, type TaskFormValues } from "@/lib/schemas";
 
 interface TaskDialogProps {
   trigger?: React.ReactNode;
+  columnId: number;
 }
 
-export function TaskDialog({ trigger }: TaskDialogProps) {
+export function TaskDialog({ trigger, columnId }: TaskDialogProps) {
   const [open, setOpen] = useState(false);
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
       title: "",
       description: "",
-      assigneeId: undefined,
+      columnId: columnId,
     },
   });
 
@@ -105,44 +99,6 @@ export function TaskDialog({ trigger }: TaskDialogProps) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="assigneeId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Assignee</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select assignee" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {assignees.map((assignee) => (
-                        <SelectItem
-                          key={assignee.id}
-                          value={assignee.id}
-                          onSelect={() => {
-                            form.setValue("assigneeId", assignee.id);
-                          }}
-                        >
-                          <Avatar className="h-6 w-6 mr-2">
-                            <AvatarImage src={assignee.avatarUrl} />
-                            <AvatarFallback>{assignee.name[0]}</AvatarFallback>
-                          </Avatar>
-                          {assignee.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

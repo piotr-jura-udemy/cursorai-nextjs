@@ -8,14 +8,10 @@ import { Plus } from "lucide-react";
 interface KanbanColumnProps {
   title: string;
   children: React.ReactNode;
-  onTaskCreate?: (task: { title: string; status: string }) => void;
+  columnId: number;
 }
 
-export function KanbanColumn({
-  title,
-  children,
-  onTaskCreate,
-}: KanbanColumnProps) {
+export function KanbanColumn({ title, children, columnId }: KanbanColumnProps) {
   return (
     <Card className="w-full min-w-[320px] max-w-[400px]">
       <CardHeader className="p-4">
@@ -31,12 +27,7 @@ export function KanbanColumn({
                 Add Task
               </Button>
             }
-            onSubmit={(data) => {
-              onTaskCreate?.({
-                ...data,
-                status: title.toLowerCase(),
-              });
-            }}
+            columnId={columnId}
           />
         </div>
         {children}

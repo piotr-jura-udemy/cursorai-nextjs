@@ -1,0 +1,5 @@
+Every @task-dialog.tsx needs to get the columnId as a prop. We need to know, to which column we're adding a task.
+
+It should be passed as a prop from @kanban-column.tsx  and it needs to receive it from @kanban-board.tsx 
+
+And then, this columnId needs to be part of the form inside @task-dialog.tsx instead of asigneeId

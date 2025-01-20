@@ -1,0 +1,8 @@
+So @taskFormSchema should be used in both @createTask() and inside the @task-dialog.tsx form.
+
+The schema needs to change. Remove priority and dueDate and add the columnId, based on @tasks 
+
+Don't add the order to the ZOD schema, as it will be generated later.
+
+Don't do anything else I didn't ask for.
+

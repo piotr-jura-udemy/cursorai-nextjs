@@ -8,7 +8,7 @@ export async function KanbanBoard() {
   return (
     <div className="flex gap-6 p-6 overflow-x-auto min-h-screen">
       {columns.map((column) => (
-        <KanbanColumn key={column.id} title={column.title}>
+        <KanbanColumn key={column.id} title={column.title} columnId={column.id}>
           {tasks
             .filter((task) => task.columnId === column.id)
             .map((task) => (
