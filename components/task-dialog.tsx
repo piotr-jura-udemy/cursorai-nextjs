@@ -37,13 +37,26 @@ import { taskFormSchema, type TaskFormValues } from "@/lib/schemas";
 interface TaskDialogProps {
   trigger?: React.ReactNode;
   columnId: number;
+  mode?: "create" | "edit";
+  defaultValues?: TaskFormValues;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function TaskDialog({ trigger, columnId }: TaskDialogProps) {
-  const [open, setOpen] = useState(false);
+export function TaskDialog({
+  trigger,
+  columnId,
+  mode = "create",
+  defaultValues,
+  open: controlledOpen,
+  onOpenChange,
+}: TaskDialogProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const open = controlledOpen ?? uncontrolledOpen;
+  const setOpen = onOpenChange ?? setUncontrolledOpen;
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       title: "",
       description: "",
       columnId: columnId,
@@ -52,11 +65,16 @@ export function TaskDialog({ trigger, columnId }: TaskDialogProps) {
 
   async function handleSubmit(data: TaskFormValues) {
     try {
-      await createTask(data);
+      if (mode === "create") {
+        await createTask(data);
+      } else {
+        // Temporary console.log for edit mode
+        console.log("Editing task with data:", data);
+      }
       setOpen(false);
       form.reset();
     } catch (error) {
-      console.error("Failed to create task:", error);
+      console.error(`Failed to ${mode} task:`, error);
     }
   }
 
@@ -65,7 +83,9 @@ export function TaskDialog({ trigger, columnId }: TaskDialogProps) {
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Task</DialogTitle>
+          <DialogTitle>
+            {mode === "create" ? "Create" : "Edit"} Task
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -105,7 +125,7 @@ export function TaskDialog({ trigger, columnId }: TaskDialogProps) {
             />
 
             <Button type="submit" className="w-full">
-              Create Task
+              {mode === "create" ? "Create" : "Save"} Task
             </Button>
           </form>
         </Form>

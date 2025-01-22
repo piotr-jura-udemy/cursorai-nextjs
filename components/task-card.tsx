@@ -20,8 +20,11 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { TaskDialog } from "./task-dialog";
 import { assignees } from "@/lib/data/assignees";
+import { TaskFormValues } from "@/lib/schemas";
 
 interface TaskCardProps {
+  id: number;
+  columnId: number;
   title: string;
   description?: string;
   assignee?: {
@@ -30,14 +33,12 @@ interface TaskCardProps {
     avatar?: string;
   };
   onAssigneeChange?: (userId: string) => void;
-  onTaskUpdate?: (data: {
-    title: string;
-    description?: string;
-    assigneeId?: string;
-  }) => void;
+  onTaskUpdate?: (data: TaskFormValues) => void;
 }
 
 export function TaskCard({
+  id,
+  columnId,
   title,
   description,
   assignee: assigneeProp,
@@ -111,17 +112,15 @@ export function TaskCard({
       </Card>
 
       <TaskDialog
+        mode="edit"
+        columnId={columnId}
+        defaultValues={{
+          title,
+          description: description || "",
+          columnId,
+        }}
         open={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
-        initialData={{
-          title,
-          description,
-          assignee,
-        }}
-        onSubmit={(data) => {
-          onTaskUpdate?.(data);
-          setIsEditDialogOpen(false);
-        }}
       />
     </>
   );
