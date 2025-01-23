@@ -114,6 +114,7 @@ export function TaskCard({
       <TaskDialog
         mode="edit"
         columnId={columnId}
+        taskId={id}
         defaultValues={{
           title,
           description: description || "",

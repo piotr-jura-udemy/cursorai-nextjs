@@ -50,3 +50,51 @@ export async function createTask(formData: TaskFormValues) {
     };
   }
 }
+
+export async function updateTask(data: TaskFormValues & { id: number }) {
+  try {
+    const result = taskFormSchema.safeParse(data);
+
+    if (!result.success) {
+      return {
+        error: "Invalid task data",
+        details: result.error.flatten().fieldErrors,
+      };
+    }
+
+    // Check if task exists
+    const existingTask = await db
+      .select()
+      .from(tasks)
+      .where(eq(tasks.id, data.id))
+      .limit(1);
+
+    if (!existingTask) {
+      return {
+        error: "Task not found",
+        details: "The task you're trying to update doesn't exist",
+      };
+    }
+
+    await db
+      .update(tasks)
+      .set({
+        title: data.title,
+        description: data.description || null,
+        columnId: data.columnId,
+      })
+      .where(eq(tasks.id, data.id));
+
+    // Optionally revalidate paths
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to update task:", error);
+    return {
+      error: "Failed to update task",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    };
+  }
+}

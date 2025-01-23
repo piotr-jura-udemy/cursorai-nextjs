@@ -30,7 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { assignees } from "@/lib/data/assignees";
-import { createTask } from "@/lib/actions/task";
+import { createTask, updateTask } from "@/lib/actions/task";
 import { useState } from "react";
 import { taskFormSchema, type TaskFormValues } from "@/lib/schemas";
 
@@ -41,6 +41,7 @@ interface TaskDialogProps {
   defaultValues?: TaskFormValues;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  taskId?: number;
 }
 
 export function TaskDialog({
@@ -50,6 +51,7 @@ export function TaskDialog({
   defaultValues,
   open: controlledOpen,
   onOpenChange,
+  taskId,
 }: TaskDialogProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
   const open = controlledOpen ?? uncontrolledOpen;
@@ -64,12 +66,12 @@ export function TaskDialog({
   });
 
   async function handleSubmit(data: TaskFormValues) {
+    console.log("handleSubmit called with data:", data);
     try {
       if (mode === "create") {
         await createTask(data);
       } else {
-        // Temporary console.log for edit mode
-        console.log("Editing task with data:", data);
+        await updateTask({ ...data, id: taskId! });
       }
       setOpen(false);
       form.reset();
