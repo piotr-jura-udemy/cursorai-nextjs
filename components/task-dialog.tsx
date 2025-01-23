@@ -71,17 +71,29 @@ export function TaskDialog({
       if (mode === "create") {
         await createTask(data);
       } else {
-        await updateTask({ ...data, id: taskId! });
+        if (!taskId) {
+          console.error("No taskId provided for edit mode");
+          return;
+        }
+        await updateTask({ ...data, id: taskId });
       }
-      setOpen(false);
       form.reset();
+      setOpen(false);
     } catch (error) {
       console.error(`Failed to ${mode} task:`, error);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!newOpen) {
+          form.reset();
+        }
+        setOpen(newOpen);
+      }}
+    >
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

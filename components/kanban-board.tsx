@@ -14,6 +14,8 @@ export async function KanbanBoard() {
             .map((task) => (
               <TaskCard
                 key={task.id}
+                id={task.id}
+                columnId={column.id}
                 title={task.title}
                 description={task.description}
                 assignee={
