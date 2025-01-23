@@ -1,0 +1,4 @@
+When this change was made, I see this error in the browser:
+
+Invalid prop `type` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props.
+

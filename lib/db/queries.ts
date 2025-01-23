@@ -9,5 +9,5 @@ export async function getColumns() {
 
 export async function getTasks() {
   await new Promise((resolve) => setTimeout(resolve, ARTIFICIAL_DELAY_MS));
-  return await db.select().from(tasks).orderBy(tasks.columnId);
+  return await db.select().from(tasks).orderBy(tasks.order);
 }

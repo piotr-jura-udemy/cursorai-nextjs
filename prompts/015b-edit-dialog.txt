@@ -1,0 +1,1 @@
+In the @task-card.tsx make sure that the @task-dialog.tsx opens with the task data, and when saved, the data is console.logged for now.

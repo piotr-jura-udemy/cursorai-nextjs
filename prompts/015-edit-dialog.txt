@@ -1,0 +1,4 @@
+We need to edit the task as well. @Forms & Frontend 
+We've got an existing dialog & form, if possible try reusing it for that feature: @task-dialog.tsx 
+
+Don't create the saving function yet on the backend, just create the form that submits the modified data (it can console.log for now).

@@ -1,0 +1,5 @@
+There's a problem with @task-dialog.tsx when editing tasks. The tasks are not saved, @handleSubmit() doesn't even get called. So something must be wrong beforehand.
+
+I'd like you to figure and fix, what can be wrong, starting from the very beggining.
+
+Take a look at @kanban-board.tsx , then @kanban-column.tsx , then @task-card.tsx which only is responsible for opening the @task-dialog.tsx . Please fix any potential issue that you can spot.
