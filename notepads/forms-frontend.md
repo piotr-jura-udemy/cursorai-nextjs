@@ -48,3 +48,7 @@ export type TaskFormValues = z.infer<typeof taskFormSchema>;
 ## Component Examples
 
 - When needing a dialog, model after @task-dialog.tsx
+
+## Dialogs
+
+- Alwaus add the description to the dialog, required by shadcn/ui

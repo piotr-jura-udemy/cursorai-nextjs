@@ -1,0 +1,6 @@
+@Forms & Frontend:
+We need dialog & form for adding columns.
+- The only field there is the title.
+- The order will be generated on the backend, ignore for now
+- We need a ZOD schema, base it on the db Schema: @schema.ts 
+- We need a button that opens that dialog. It should be at the top of the columns, on the right. The button needs label & plus icon.

@@ -7,3 +7,9 @@ export const taskFormSchema = z.object({
 });
 
 export type TaskFormValues = z.infer<typeof taskFormSchema>;
+
+export const columnFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+});
+
+export type ColumnFormValues = z.infer<typeof columnFormSchema>;
