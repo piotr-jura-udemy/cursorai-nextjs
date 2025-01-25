@@ -1,8 +1,12 @@
 import { KanbanBoard } from "@/components/kanban-board";
+import { ColumnDialog } from "@/components/column-dialog";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col p-4">
+    <main className="container mx-auto p-4">
+      <div className="flex justify-end mb-6">
+        <ColumnDialog />
+      </div>
       <KanbanBoard />
     </main>
   );

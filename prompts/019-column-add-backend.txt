@@ -1,0 +1,3 @@
+@Creating Server Actions make an action that actually saved a new column through @column-dialog.tsx and connect this action to the form. No new components or visual changes! 
+
+The order for the column needs to be generated, based on what's inside the database. Just pick a next free number.

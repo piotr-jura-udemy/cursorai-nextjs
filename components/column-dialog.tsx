@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { columnFormSchema, type ColumnFormValues } from "@/lib/schemas";
+import { createColumn } from "@/lib/actions/columns";
 
 export function ColumnDialog() {
   const [open, setOpen] = useState(false);
@@ -35,7 +36,14 @@ export function ColumnDialog() {
 
   async function handleSubmit(data: ColumnFormValues) {
     try {
-      // TODO: Add createColumn action here
+      const result = await createColumn(data);
+
+      if (result.error) {
+        // You might want to show this error to the user
+        console.error("Failed to create column:", result.error);
+        return;
+      }
+
       form.reset();
       setOpen(false);
     } catch (error) {
@@ -46,7 +54,7 @@ export function ColumnDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button variant="secondary" size="sm">
           <Plus className="mr-2 h-4 w-4" />
           Add Column
         </Button>
