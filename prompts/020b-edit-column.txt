@@ -1,0 +1,1 @@
+Now add a dropdown menu, right to "add task" button inside @kanban-column.tsx which would have an edit option, that opens the edit column dialog. 

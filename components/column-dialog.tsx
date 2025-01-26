@@ -23,45 +23,88 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { columnFormSchema, type ColumnFormValues } from "@/lib/schemas";
-import { createColumn } from "@/lib/actions/columns";
+import { createColumn, updateColumn } from "@/lib/actions/columns";
 
-export function ColumnDialog() {
-  const [open, setOpen] = useState(false);
+interface ColumnDialogProps {
+  trigger?: React.ReactNode;
+  mode?: "create" | "edit";
+  defaultValues?: ColumnFormValues;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  columnId?: number;
+}
+
+export function ColumnDialog({
+  trigger,
+  mode = "create",
+  defaultValues,
+  open: controlledOpen,
+  onOpenChange,
+  columnId,
+}: ColumnDialogProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const open = controlledOpen ?? uncontrolledOpen;
+  const setOpen = onOpenChange ?? setUncontrolledOpen;
+
   const form = useForm<ColumnFormValues>({
     resolver: zodResolver(columnFormSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       title: "",
     },
   });
 
   async function handleSubmit(data: ColumnFormValues) {
     try {
-      const result = await createColumn(data);
-
-      if (result.error) {
-        // You might want to show this error to the user
-        console.error("Failed to create column:", result.error);
-        return;
+      if (mode === "create") {
+        const result = await createColumn(data);
+        if (result.error) {
+          console.error("Failed to create column:", result.error);
+          return;
+        }
+      } else {
+        if (!columnId) {
+          console.error("No columnId provided for edit mode");
+          return;
+        }
+        const result = await updateColumn({ ...data, id: columnId });
+        if (result.error) {
+          console.error("Failed to update column:", result.error);
+          return;
+        }
       }
 
       form.reset();
       setOpen(false);
     } catch (error) {
-      console.error("Failed to create column:", error);
+      console.error(`Failed to ${mode} column:`, error);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="secondary" size="sm">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Column
-        </Button>
-      </DialogTrigger>
+    <Dialog
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!newOpen) {
+          form.reset();
+        }
+        setOpen(newOpen);
+      }}
+    >
+      {trigger ? (
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+      ) : (
+        <DialogTrigger asChild>
+          <Button variant="secondary" size="sm">
+            <Plus className="mr-2 h-4 w-4" />
+            Add Column
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Column</DialogTitle>
+          <DialogTitle>
+            {mode === "create" ? "Create" : "Edit"} Column
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -83,7 +126,7 @@ export function ColumnDialog() {
             />
 
             <Button type="submit" className="w-full">
-              Create Column
+              {mode === "create" ? "Create Column" : "Update Column"}
             </Button>
           </form>
         </Form>

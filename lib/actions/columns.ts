@@ -3,7 +3,7 @@
 import { db } from "@/lib/db/config";
 import { columns } from "@/lib/db/schema";
 import { columnFormSchema, type ColumnFormValues } from "@/lib/schemas";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function createColumn(data: ColumnFormValues) {
@@ -37,6 +37,37 @@ export async function createColumn(data: ColumnFormValues) {
   } catch (error) {
     return {
       error: "Failed to create column",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    };
+  }
+}
+
+export async function updateColumn({
+  id,
+  title,
+}: ColumnFormValues & { id: number }) {
+  const result = columnFormSchema.safeParse({ title });
+
+  if (!result.success) {
+    return {
+      error: "Invalid column data",
+      details: result.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await db
+      .update(columns)
+      .set({ title: result.data.title })
+      .where(eq(columns.id, id));
+
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error) {
+    return {
+      error: "Failed to update column",
       details:
         error instanceof Error ? error.message : "Unknown error occurred",
     };

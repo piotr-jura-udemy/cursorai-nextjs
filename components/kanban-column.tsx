@@ -2,8 +2,15 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { TaskDialog } from "./task-dialog";
+import { ColumnDialog } from "./column-dialog";
 import { Button } from "./ui/button";
-import { Plus } from "lucide-react";
+import { Plus, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 interface KanbanColumnProps {
   title: string;
@@ -20,15 +27,36 @@ export function KanbanColumn({ title, children, columnId }: KanbanColumnProps) {
       <CardContent className="p-4 pt-0">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-medium">{title}</h3>
-          <TaskDialog
-            trigger={
-              <Button size="sm" variant="ghost">
-                <Plus className="h-4 w-4 mr-1" />
-                Add Task
-              </Button>
-            }
-            columnId={columnId}
-          />
+          <div className="flex items-center gap-2">
+            <TaskDialog
+              trigger={
+                <Button size="sm" variant="ghost">
+                  <Plus className="h-4 w-4 mr-1" />
+                  Add Task
+                </Button>
+              }
+              columnId={columnId}
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <ColumnDialog
+                  mode="edit"
+                  columnId={columnId}
+                  defaultValues={{ title }}
+                  trigger={
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                      Edit Column
+                    </DropdownMenuItem>
+                  }
+                />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
         {children}
       </CardContent>
