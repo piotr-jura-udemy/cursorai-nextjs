@@ -1,0 +1,1 @@
+Inside the @kanban-column.tsx there's a delete menu. The operation is destructive, so before the server is actually called, I'd like you to show an Alert Dialog (from shadcn UI) - which is already installed. Only run the action, when someone confirms!
