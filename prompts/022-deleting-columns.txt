@@ -1,0 +1,5 @@
+I need to remove columns. 
+1) Add the dropdown menu option to @kanban-column.tsx 
+2) Create a server action that deletes columns using @Creating Server Actions 
+
+Make sure to immediately call the action when the menu option is pressed, without any extra events!

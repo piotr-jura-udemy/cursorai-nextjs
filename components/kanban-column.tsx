@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { deleteColumn } from "@/lib/actions/columns";
 
 interface KanbanColumnProps {
   title: string;
@@ -54,6 +55,12 @@ export function KanbanColumn({ title, children, columnId }: KanbanColumnProps) {
                     </DropdownMenuItem>
                   }
                 />
+                <DropdownMenuItem
+                  className="text-red-600"
+                  onClick={() => deleteColumn(columnId)}
+                >
+                  Delete Column
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

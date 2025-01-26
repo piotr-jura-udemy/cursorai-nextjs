@@ -73,3 +73,19 @@ export async function updateColumn({
     };
   }
 }
+
+export async function deleteColumn(columnId: number) {
+  try {
+    await db.delete(columns).where(eq(columns.id, columnId));
+
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error) {
+    return {
+      error: "Failed to delete column",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    };
+  }
+}
