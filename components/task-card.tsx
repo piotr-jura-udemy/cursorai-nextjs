@@ -21,6 +21,7 @@ import { useState } from "react";
 import { TaskDialog } from "./task-dialog";
 import { assignees } from "@/lib/data/assignees";
 import { TaskFormValues } from "@/lib/schemas";
+import { deleteTask } from "@/lib/actions/task";
 
 interface TaskCardProps {
   id: number;
@@ -48,6 +49,14 @@ export function TaskCard({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const assignee = assignees.find((a) => a.id === assigneeProp?.id);
+
+  const handleDelete = async () => {
+    const result = await deleteTask(id);
+    if (result.error) {
+      // You might want to add toast notification here
+      console.error(result.error);
+    }
+  };
 
   return (
     <>
@@ -98,6 +107,12 @@ export function TaskCard({
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
                     Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleDelete}
+                    className="text-destructive"
+                  >
+                    Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

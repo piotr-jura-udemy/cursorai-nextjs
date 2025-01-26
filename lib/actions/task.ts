@@ -98,3 +98,18 @@ export async function updateTask(data: TaskFormValues & { id: number }) {
     };
   }
 }
+
+export async function deleteTask(taskId: number) {
+  try {
+    await db.delete(tasks).where(eq(tasks.id, taskId));
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error) {
+    return {
+      error: "Failed to delete task",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    };
+  }
+}

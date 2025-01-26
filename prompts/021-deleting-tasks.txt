@@ -1,0 +1,5 @@
+I need to delete tasks:
+1) Add a dropdown option inside @task-card.tsx to delete
+2) Create an action according to @Creating Server Actions that deletes the task
+
+Run this new action immediately when the "Delete" menu option is clicked.
