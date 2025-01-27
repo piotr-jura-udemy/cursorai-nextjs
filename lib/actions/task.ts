@@ -113,3 +113,37 @@ export async function deleteTask(taskId: number) {
     };
   }
 }
+
+export async function moveTask(taskId: number, targetColumnId: number) {
+  try {
+    // Get the max order in target column
+    const [maxOrder] = await db
+      .select({ maxOrder: tasks.order })
+      .from(tasks)
+      .where(eq(tasks.columnId, targetColumnId))
+      .orderBy(tasks.order)
+      .limit(1);
+
+    const newOrder = maxOrder?.maxOrder ? maxOrder.maxOrder + 1 : 0;
+
+    // Update the task
+    await db
+      .update(tasks)
+      .set({
+        columnId: targetColumnId,
+        order: newOrder,
+      })
+      .where(eq(tasks.id, taskId));
+
+    // Optionally revalidate the board path
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error) {
+    return {
+      error: "Failed to move task",
+      details:
+        error instanceof Error ? error.message : "Unknown error occurred",
+    };
+  }
+}

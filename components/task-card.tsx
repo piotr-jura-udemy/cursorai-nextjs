@@ -24,8 +24,12 @@ import { useState } from "react";
 import { TaskDialog } from "./task-dialog";
 import { assignees } from "@/lib/data/assignees";
 import { TaskFormValues } from "@/lib/schemas";
-import { deleteTask } from "@/lib/actions/task";
-import { Column } from "@/lib/db/schema";
+import { deleteTask, moveTask } from "@/lib/actions/task";
+import { columns } from "@/lib/db/schema";
+import type { InferSelectModel } from "drizzle-orm";
+
+// Fix the Column type
+type Column = InferSelectModel<typeof columns>;
 
 interface TaskCardProps {
   id: number;
@@ -61,6 +65,14 @@ export function TaskCard({
     if (result.error) {
       // You might want to add toast notification here
       console.error(result.error);
+    }
+  };
+
+  const handleMove = async (targetColumnId: number) => {
+    const result = await moveTask(id, targetColumnId);
+    if (result.error) {
+      console.error(result.error);
+      // You might want to add toast notification here
     }
   };
 
@@ -118,11 +130,16 @@ export function TaskCard({
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>Move to</DropdownMenuSubTrigger>
                       <DropdownMenuSubContent>
-                        {availableColumns.map((column) => (
-                          <DropdownMenuItem key={column.id}>
-                            {column.title}
-                          </DropdownMenuItem>
-                        ))}
+                        {availableColumns
+                          .filter((column) => column.id !== columnId) // Don't show current column
+                          .map((column) => (
+                            <DropdownMenuItem
+                              key={column.id}
+                              onClick={() => handleMove(column.id)}
+                            >
+                              {column.title}
+                            </DropdownMenuItem>
+                          ))}
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                   )}

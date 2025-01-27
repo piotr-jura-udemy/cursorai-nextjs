@@ -1,0 +1,1 @@
+Create a server action that gets called to move task horizontally, using @Creating Server Actions. Make sure to handle the order of the task, for simplicity moving it at the nd of the desired column.

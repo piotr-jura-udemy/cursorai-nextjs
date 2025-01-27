@@ -1,6 +1,6 @@
 import { db } from "@/lib/db/config";
 import { columns, tasks } from "@/lib/db/schema";
-const ARTIFICIAL_DELAY_MS = 3000;
+const ARTIFICIAL_DELAY_MS = 0;
 
 export async function getColumns() {
   await new Promise((resolve) => setTimeout(resolve, ARTIFICIAL_DELAY_MS));
