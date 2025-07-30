@@ -5,6 +5,9 @@ export const columns = pgTable("columns", {
   title: text("title").notNull(),
   order: integer("order").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const tasks = pgTable("tasks", {
@@ -16,4 +19,7 @@ export const tasks = pgTable("tasks", {
   }),
   order: integer("order").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
